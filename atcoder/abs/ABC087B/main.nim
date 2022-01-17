@@ -29,14 +29,17 @@ proc `^=`*[T: SomeInteger or bool](n: var T, m: T) {.inline.} = n = n xor m
 proc `<<=`*[T: SomeInteger](n: var T, m: T) {.inline.} = n = n shl m
 proc `>>=`*[T: SomeInteger](n: var T, m: T) {.inline.} = n = n shr m
 template `%` (a, b: int): int = a mod b
+template `//` (a, b: int): int = a div b
 proc echo*(v: int) = echo($v)
 proc echo*(v: float) = echo(fmt"{v:.10f}")
-func chmax*[T](t: var T; v: T): bool{.discardable.} = (let f = (t < v); if f: t = v; f)
-func chmin*[T](t: var T; v: T): bool{.discardable.} = (let f = (t > v); if f: t = v; f)
+func chmax*[T](t: var T; v: T): bool{.discardable.} = (let f = (t < v);
+    if f: t = v; f)
+func chmin*[T](t: var T; v: T): bool{.discardable.} = (let f = (t > v);
+    if f: t = v; f)
 proc scanf(formatstr: cstring){.header: "<stdio.h>", varargs.}
 proc getchar(): char {.header: "<stdio.h>", varargs.}
-proc nextInt(): int = scanf("%lld",addr result)
-proc nextFloat(): float = scanf("%lf",addr result)
+proc nextInt(): int = scanf("%lld", addr result)
+proc nextFloat(): float = scanf("%lf", addr result)
 proc nextString(): string =
   var get = false
   result = ""
@@ -50,12 +53,18 @@ proc nextString(): string =
       get = false
 # >>>
 
-proc solve(A:int, B:int, C:int, X:int):void =
+proc solve(A: int, B: int, C: int, X: int): void =
   discard
-  <+CURSOR+>
+  var ans: int = 0
+  for i in countup(0, A):
+    for j in countup(0, B):
+      for k in countup(0, C):
+        if i * 500 + j * 100 + 50 * k == X:
+          ans.inc
+  echo ans
 
 # <<< main
-proc main():void =
+proc main(): void =
   var A = nextInt()
   var B = nextInt()
   var C = nextInt()

@@ -31,12 +31,14 @@ proc `>>=`*[T: SomeInteger](n: var T, m: T) {.inline.} = n = n shr m
 template `%` (a, b: int): int = a mod b
 proc echo*(v: int) = echo($v)
 proc echo*(v: float) = echo(fmt"{v:.10f}")
-func chmax*[T](t: var T; v: T): bool{.discardable.} = (let f = (t < v); if f: t = v; f)
-func chmin*[T](t: var T; v: T): bool{.discardable.} = (let f = (t > v); if f: t = v; f)
+func chmax*[T](t: var T; v: T): bool{.discardable.} = (let f = (t < v);
+    if f: t = v; f)
+func chmin*[T](t: var T; v: T): bool{.discardable.} = (let f = (t > v);
+    if f: t = v; f)
 proc scanf(formatstr: cstring){.header: "<stdio.h>", varargs.}
 proc getchar(): char {.header: "<stdio.h>", varargs.}
-proc nextInt(): int = scanf("%lld",addr result)
-proc nextFloat(): float = scanf("%lf",addr result)
+proc nextInt(): int = scanf("%lld", addr result)
+proc nextFloat(): float = scanf("%lf", addr result)
 proc nextString(): string =
   var get = false
   result = ""
@@ -50,12 +52,25 @@ proc nextString(): string =
       get = false
 # >>>
 
-proc solve(N:int, Y:int):void =
+proc solve(N: int, Y: int): void =
   discard
-  <+CURSOR+>
+  let
+    a = 10
+    b = 5
+    c = 1
+    total = Y div 1000
+  var
+    rest = 0
+  for i in 0..N:
+    if i * a > total: continue
+    for j in 0..N-i:
+      if i * a + j * b == N - i - j:
+        echo i, " ", j, " ", N - i - j
+        quit 0
+  echo "-1 -1 -1"
 
 # <<< main
-proc main():void =
+proc main(): void =
   var N = nextInt()
   var Y = nextInt()
   solve(N, Y);
