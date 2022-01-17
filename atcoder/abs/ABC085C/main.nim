@@ -64,9 +64,8 @@ proc solve(N: int, Y: int): void =
   for i in 0..N:
     if i * a > total: continue
     for j in 0..N-i:
-      if total - (i * a + j * b) == N - i - j:
+      if i * a + j * b == N - i - j:
         echo i, " ", j, " ", N - i - j
-        # echo (i * a + j * b + (N - i - j)) * 1000
         quit 0
   echo "-1 -1 -1"
 
