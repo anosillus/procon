@@ -29,6 +29,8 @@ proc `^=`*[T: SomeInteger or bool](n: var T, m: T) {.inline.} = n = n xor m
 proc `<<=`*[T: SomeInteger](n: var T, m: T) {.inline.} = n = n shl m
 proc `>>=`*[T: SomeInteger](n: var T, m: T) {.inline.} = n = n shr m
 template `%` (a, b: int): int = a mod b
+template `//` (a, b: int): int = a div b
+template rep(a, b): seq = newSeqWith(b, a)
 proc echo*(v: int) = echo($v)
 proc echo*(v: float) = echo(fmt"{v:.10f}")
 func chmax*[T](t: var T; v: T): bool{.discardable.} = (let f = (t < v);
@@ -52,29 +54,21 @@ proc nextString(): string =
       get = false
 # >>>
 
-proc solve(N: int, Y: int): void =
+let YES = "YES"
+let NO = "NO"
+
+proc solve(S: string): void =
   discard
-  let
-    a = 10
-    b = 5
-    c = 1
-    total = Y div 1000
-  var
-    rest = 0
-  for i in 0..N:
-    if i * a > total: continue
-    for j in 0..N-i:
-      if total - (i * a + j * b) == N - i - j:
-        echo i, " ", j, " ", N - i - j
-        # echo (i * a + j * b + (N - i - j)) * 1000
-        quit 0
-  echo "-1 -1 -1"
+  if S.replace("eraser", "").replace("erase", "").replace("dreamer",
+      "").replace("dream", "").len() == 0:
+    echo YES
+  else:
+    echo NO
 
 # <<< main
 proc main(): void =
-  var N = nextInt()
-  var Y = nextInt()
-  solve(N, Y);
+  var S = nextString()
+  solve(S);
   return
 
 main()
