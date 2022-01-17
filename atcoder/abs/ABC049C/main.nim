@@ -52,15 +52,17 @@ proc nextString(): string =
       get = false
 # >>>
 
-proc solve(N:int, a:seq[int]):void =
+let YES = "YES"
+let NO = "NO"
+
+proc solve(S:string):void =
   discard
   <+CURSOR+>
 
 # <<< main
 proc main():void =
-  var N = nextInt()
-  var a = newSeqWith(N, nextInt())
-  solve(N, a);
+  var S = nextString()
+  solve(S);
   return
 
 main()
