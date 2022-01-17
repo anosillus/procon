@@ -29,6 +29,8 @@ proc `^=`*[T: SomeInteger or bool](n: var T, m: T) {.inline.} = n = n xor m
 proc `<<=`*[T: SomeInteger](n: var T, m: T) {.inline.} = n = n shl m
 proc `>>=`*[T: SomeInteger](n: var T, m: T) {.inline.} = n = n shr m
 template `%` (a, b: int): int = a mod b
+template `//` (a, b: int): int = a div b
+template rep(a, b): seq = newSeqWith(b, a)
 proc echo*(v: int) = echo($v)
 proc echo*(v: float) = echo(fmt"{v:.10f}")
 func chmax*[T](t: var T; v: T): bool{.discardable.} = (let f = (t < v);
@@ -52,29 +54,38 @@ proc nextString(): string =
       get = false
 # >>>
 
-proc solve(N: int, Y: int): void =
+let YES = "Yes"
+let NO = "No"
+
+proc solve(N: int, t: seq[int], x: seq[int], y: seq[int]): void =
   discard
-  let
-    a = 10
-    b = 5
-    c = 1
-    total = Y div 1000
   var
-    rest = 0
-  for i in 0..N:
-    if i * a > total: continue
-    for j in 0..N-i:
-      if total - (i * a + j * b) == N - i - j:
-        echo i, " ", j, " ", N - i - j
-        # echo (i * a + j * b + (N - i - j)) * 1000
-        quit 0
-  echo "-1 -1 -1"
+    last_x = 0
+    last_y = 0
+    last_t = 0
+    diff: int
+  for i in 0..<N:
+    diff = (t[i] - last_t) - abs(last_x - x[i]) - abs(last_y - y[i])
+    if diff < 0 or diff mod 2 != 0:
+      echo NO
+      quit 0
+    else:
+      last_t = t[i]
+      last_x = x[i]
+      last_y = y[i]
+  echo YES
 
 # <<< main
 proc main(): void =
   var N = nextInt()
-  var Y = nextInt()
-  solve(N, Y);
+  var t = newSeqWith(N, 0)
+  var x = newSeqWith(N, 0)
+  var y = newSeqWith(N, 0)
+  for i in 0..<N:
+    t[i] = nextInt()
+    x[i] = nextInt()
+    y[i] = nextInt()
+  solve(N, t, x, y);
   return
 
 main()
