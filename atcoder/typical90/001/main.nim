@@ -52,6 +52,24 @@ proc nextString(): string =
     else:
       if get: break
       get = false
+proc minLeft*(f: proc(x: int): bool, s: Slice[int]): int =
+  var (l, r) = (s.a - 1, s.b)
+  if not f(r): return s.b + 1
+  while r - l > 1:
+    let d = (r - l) shr 1
+    let m = l + d
+    if f(m): r = m
+    else: l = m
+  return r
+proc maxRight*(f: proc(x: int): bool, s: Slice[int]): int =
+  var (l, r) = (s.a, s.b + 1)
+  if not f(l): return s.a - 1
+  while r - l > 1:
+    let d = (r - l) shr 1
+    let m = l + d
+    if f(m): l = m
+    else: r = m
+  return l
 # >>>
 
 proc solve(N: int, L: int, K: int, A: seq[int]): void =
@@ -59,26 +77,17 @@ proc solve(N: int, L: int, K: int, A: seq[int]): void =
 
   proc check(mid: int): bool =
     var
-      prev = 0
+      pre = 0
       cut_count = 0
     for i in A:
-      if (i - prev > mid) and (L - i > mid):
-        prev = i
+      if (i - pre >= mid) and (L - i >= mid):
+        pre = i
         cut_count.inc()
         if cut_count == K:
           return true
     return false
 
-  proc binaryS(left = 1, right = L): int =
-    if right - left <= 1:
-      return right
-    var mid: int = left + (right - left).div(2)
-    if mid.check():
-      return binaryS(mid, right)
-    else:
-      return binaryS(left, mid)
-
-  echo binaryS()
+  echo check.maxRight(1..L)
 
   # <<< main
 proc main(): void =
