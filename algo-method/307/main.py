@@ -12,6 +12,6 @@ def LI(): return list(map(int,sys.stdin.readline().rstrip().split()))
 N = I()
 A = LI()
 
-print(A)
-
+# いくらラムダ文とはいえ、これはかなり遅い。
+print(sum([i if i > 0 else 0 for i in A]))
 
