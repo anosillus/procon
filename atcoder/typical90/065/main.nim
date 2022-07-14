@@ -39,6 +39,15 @@ proc scanf(formatstr: cstring){.header: "<stdio.h>", varargs.}
 proc getchar(): char {.header: "<stdio.h>", varargs.}
 proc nextInt(): int = scanf("%lld",addr result)
 proc nextFloat(): float = scanf("%lf",addr result)
+proc findIndexes[T](items: openArray[T], value: T): seq[int] =
+  var indexes = newSeq[int]()
+  for index, item in items.pairs:
+    if item == value:
+      indexes.add(index)
+  return indexes
+proc maxIndexes[T](items: openArray[T]): seq[int] = return items.findIndexes(items.max)
+proc minIndexes[T](items: openArray[T]): seq[int] =
+  return items.findIndexes(items.min)
 proc nextString(): string =
   var get = false
   result = ""
@@ -50,12 +59,30 @@ proc nextString(): string =
     else:
       if get: break
       get = false
+proc minLeft*(f: proc(x: int): bool, s: Slice[int]): int =
+  var (l, r) = (s.a - 1, s.b)
+  if not f(r): return s.b + 1
+  while r - l > 1:
+    let d = (r - l) shr 1
+    let m = l + d
+    if f(m): r = m
+    else: l = m
+  return r
+proc maxRight*(f: proc(x: int): bool, s: Slice[int]): int =
+  var (l, r) = (s.a, s.b + 1)
+  if not f(l): return s.a - 1
+  while r - l > 1:
+    let d = (r - l) shr 1
+    let m = l + d
+    if f(m): l = m
+    else: r = m
+  return l
 # >>>
 
 let MOD = 998244353
 proc solve(R:int, G:int, B:int, K:int, X:int, Y:int, Z:int):void =
   discard
-  <+CURSOR+>
+
 
 # <<< main
 proc main():void =

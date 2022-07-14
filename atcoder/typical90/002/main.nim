@@ -30,17 +30,24 @@ proc `<<=`*[T: SomeInteger](n: var T, m: T) {.inline.} = n = n shl m
 proc `>>=`*[T: SomeInteger](n: var T, m: T) {.inline.} = n = n shr m
 template `%` (a, b: int): int = a mod b
 template `//` (a, b: int): int = a div b
-template rep(a, b): seq = newSeqWith(b, a)
+template rep(a,b):seq = newSeqWith(b,a)
 proc echo*(v: int) = echo($v)
 proc echo*(v: float) = echo(fmt"{v:.10f}")
-func chmax*[T](t: var T; v: T): bool{.discardable.} = (let f = (t < v);
-    if f: t = v; f)
-func chmin*[T](t: var T; v: T): bool{.discardable.} = (let f = (t > v);
-    if f: t = v; f)
+func chmax*[T](t: var T; v: T): bool{.discardable.} = (let f = (t < v); if f: t = v; f)
+func chmin*[T](t: var T; v: T): bool{.discardable.} = (let f = (t > v); if f: t = v; f)
 proc scanf(formatstr: cstring){.header: "<stdio.h>", varargs.}
 proc getchar(): char {.header: "<stdio.h>", varargs.}
-proc nextInt(): int = scanf("%lld", addr result)
-proc nextFloat(): float = scanf("%lf", addr result)
+proc nextInt(): int = scanf("%lld",addr result)
+proc nextFloat(): float = scanf("%lf",addr result)
+proc findIndexes[T](items: openArray[T], value: T): seq[int] =
+  var indexes = newSeq[int]()
+  for index, item in items.pairs:
+    if item == value:
+      indexes.add(index)
+  return indexes
+proc maxIndexes[T](items: openArray[T]): seq[int] = return items.findIndexes(items.max)
+proc minIndexes[T](items: openArray[T]): seq[int] =
+  return items.findIndexes(items.min)
 proc nextString(): string =
   var get = false
   result = ""
@@ -52,33 +59,32 @@ proc nextString(): string =
     else:
       if get: break
       get = false
+proc minLeft*(f: proc(x: int): bool, s: Slice[int]): int =
+  var (l, r) = (s.a - 1, s.b)
+  if not f(r): return s.b + 1
+  while r - l > 1:
+    let d = (r - l) shr 1
+    let m = l + d
+    if f(m): r = m
+    else: l = m
+  return r
+proc maxRight*(f: proc(x: int): bool, s: Slice[int]): int =
+  var (l, r) = (s.a, s.b + 1)
+  if not f(l): return s.a - 1
+  while r - l > 1:
+    let d = (r - l) shr 1
+    let m = l + d
+    if f(m): l = m
+    else: r = m
+  return l
 # >>>
 
-let
-  s = "("
-  e = ")"
-
-proc solve(N: int): void =
+proc solve(N:int):void =
   discard
 
-  proc calc(start_s: int, end_s: int, pattern: string): void =
-    if end_s == 0:
-      echo pattern
-    elif start_s == end_s:
-      calc(start_s - 1, end_s, pattern & s)
-    elif start_s == 0:
-      calc(start_s, end_s - 1, pattern & e)
-    else:
-      calc(start_s - 1, end_s, pattern & s)
-      calc(start_s, end_s - 1, pattern & e)
-
-  if N mod 2 != 0:
-    echo ""
-  else:
-    calc(N div 2, N div 2, "")
 
 # <<< main
-proc main(): void =
+proc main():void =
   var N = nextInt()
   solve(N);
   return

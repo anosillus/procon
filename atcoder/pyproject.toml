@@ -68,12 +68,15 @@ pytest-picked = "^0.4.6"
 pytest-sugar = "^0.9.4"
 setuptools = "^62.3.2"
 tox = "^3.25.0"
+atcoder-tools = "^2.12.0"
+MarkupSafe = "2.0.1"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [virtualenvs]
+create = true
 in-project = true
 
 [tool.isort]
@@ -106,8 +109,6 @@ namespace_packages = true
 
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
-pythonpath = 'src'
 filterwarnings = ["ignore::DeprecationWarning",]
 addopts = [
   "-v",
@@ -118,7 +119,6 @@ addopts = [
   "--strict-config",
   "--strict-markers",
   "--picked",
-  "--cov=src",
   "--cov-branch",
   "--cov-report=html",
   "--cov-report=term",
@@ -130,11 +130,6 @@ addopts = [
 [tool.pydocstyle]
 convention = "google"
 add_select = ["D204", "D400", "D401", "D404", "D413"]
-
-[tool.coverage.run]
-branch = true
-source = ["pynguin", "tests"]
-omit = ["tests/fixtures/*"]
 
 [tool.coverage.html]
 directory = "cov_html"
